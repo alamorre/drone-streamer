@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>My Spy PiCam</title>
+    <script type="text/javascript" src="strobe/lib/swfobject.js"></script>
+   <script type="text/javascript">        
+       // Create a StrobeMediaPlayback configuration 
+      var parameters = {  
+                     src: "rtmp://" + window.location.hostname + "/flvplayback/myStream",  
+                              autoPlay: true,  
+                     controlBarAutoHide: false,  
+                     playButtonOverlay: true,  
+                     showVideoInfoOverlayOnStartUp: false,  
+                              optimizeBuffering : false,  
+                              initialBufferTime : 0.1,  
+                              expandedBufferTime : 0.1,  
+                              minContinuousPlayback : 0.1,  
+                     poster: "strobe/images/poster.png"  
+                   };  
+          
+      // Embed the player SWF:          
+      swfobject.embedSWF
+         ( "strobe/StrobeMediaPlayback.swf"
+         , "strobeMediaPlayback"
+         , 1080
+         , 720
+         , "10.1.0"
+         , {}
+         , parameters
+         , { allowFullScreen: "true"}
+         , { name: "strobeMediaPlayback" }
+         );
+      
+    </script>     
+  </head>
+  <body>
+   <script type="text/javascript">
+	// Set up our HTTP request
+	var xhr = new XMLHttpRequest();
+
+	// Setup our listener to process completed requests
+	xhr.onload = function () {
+	
+		// Process our return data
+		if (xhr.status >= 200 && xhr.status < 300) {
+			// What do when the request is successful
+			console.log('success!', xhr);
+		} else {
+			// What do when the request fails
+			console.log('The request failed!');
+		}
+	
+		// Code that should run regardless of the request status
+		console.log('This always runs...');
+	};
+
+	// Create and send a GET request
+	// The first argument is the post type (GET, POST, PUT, DELETE, etc.)
+	// The second argument is the endpoint URL
+	xhr.open('GET', 'https://jsonplaceholder.typicode.com/posts');	
+	xhr.send();
+
+	console.log('xhr', xhr);
+	console.log('here');	
+   </script>
+   <div id="strobeMediaPlayback">
+      <p>Alternative content.</p>
+    </div>
+  </body>
+</html>
