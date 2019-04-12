@@ -1,7 +1,3 @@
-# Web streaming example
-# Source code from the official PiCamera package
-# http://picamera.readthedocs.io/en/latest/recipes2.html#web-streaming
-
 import io
 import picamera
 import logging
@@ -12,10 +8,10 @@ from http import server
 PAGE="""\
 <html>
 <head>
-<title>Aerial Drone view to Server Stream</title>
+<title>Drone Streaming</title>
 </head>
 <body>
-<center><h1>Raspberry Pi - Surveillance Camera</h1></center>
+<center><h1>Drone-Pi Streamer</h1></center>
 <center><img src="stream.mjpg" width="640" height="480"></center>
 </body>
 </html>
@@ -29,8 +25,6 @@ class StreamingOutput(object):
 
     def write(self, buf):
         if buf.startswith(b'\xff\xd8'):
-            # New frame, copy the existing buffer's content and notify all
-            # clients it's available
             self.buffer.truncate()
             with self.condition:
                 self.frame = self.buffer.getvalue()
@@ -86,8 +80,7 @@ class StreamingServer(socketserver.ThreadingMixIn, server.HTTPServer):
 
 with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
     output = StreamingOutput()
-    #Uncomment the next line to change your Pi's Camera rotation (in degrees)
-    camera.rotation = 180
+    camera.rotation = 180 
     camera.start_recording(output, format='mjpeg')
     try:
         address = ('', 8000)
